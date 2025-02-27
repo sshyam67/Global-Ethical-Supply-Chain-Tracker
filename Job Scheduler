@@ -1,0 +1,37 @@
+# GEST - Job Scheduler for Real-Time Data Updates
+
+from apscheduler.schedulers.background import BackgroundScheduler
+import requests
+import time
+import logging
+
+# Configure Logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+scheduler = BackgroundScheduler()
+
+# Function to Fetch and Update Data
+def update_supply_chain_data():
+    try:
+        response = requests.get("https://example.com/api/ethical-supply-data")  # Replace with real API
+        if response.status_code == 200:
+            data = response.json()
+            logging.info(f"Successfully fetched {len(data)} records.")
+            # TODO: Save data to database (PostgreSQL or MongoDB)
+        else:
+            logging.warning("Failed to fetch data: Status Code {}".format(response.status_code))
+    except Exception as e:
+        logging.error(f"Error in data update: {e}")
+
+# Schedule Task to Run Every Hour
+scheduler.add_job(update_supply_chain_data, 'interval', hours=1)
+
+# Start Scheduler
+scheduler.start()
+
+# Keep Running
+try:
+    while True:
+        time.sleep(60)
+except (KeyboardInterrupt, SystemExit):
+    scheduler.shutdown()
