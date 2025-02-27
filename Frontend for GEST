@@ -1,0 +1,75 @@
+// GEST - Global Ethical Supply Chain Tracker (Frontend - React.js)
+// Frontend Dashboard
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const Dashboard = () => {
+    const [companies, setCompanies] = useState([]);
+    const [alerts, setAlerts] = useState([]);
+    
+    useEffect(() => {
+        axios.get("http://localhost:8000/companies")
+            .then(response => setCompanies(response.data))
+            .catch(error => console.error("Error fetching companies", error));
+
+        axios.get("http://localhost:8000/alerts")
+            .then(response => setAlerts(response.data))
+            .catch(error => console.error("Error fetching alerts", error));
+    }, []);
+
+    return (
+        <div>
+            <h1>GEST Dashboard</h1>
+            <h2>Companies</h2>
+            <ul>
+                {companies.map((company, index) => (
+                    <li key={index}>{company.name} - Ethical Score: {company.ethical_score}</li>
+                ))}
+            </ul>
+            <h2>Real-Time Alerts</h2>
+            <ul>
+                {alerts.message ? <li>{alerts.message}</li> : alerts.map((alert, index) => <li key={index}>{alert}</li>)}
+            </ul>
+        </div>
+    );
+};
+
+export default Dashboard;
+
+// Database Schema (PostgreSQL & MongoDB)
+
+/* PostgreSQL Schema (Structured Data) */
+CREATE TABLE companies (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    labor_score INT NOT NULL,
+    environmental_score INT NOT NULL,
+    governance_score INT NOT NULL,
+    violations INT NOT NULL,
+    ethical_score FLOAT NOT NULL
+);
+
+/* MongoDB Schema (Unstructured Data) */
+db.createCollection("violations", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["company_id", "description", "date"],
+            properties: {
+                company_id: {
+                    bsonType: "objectId",
+                    description: "ID referencing the company"
+                },
+                description: {
+                    bsonType: "string",
+                    description: "Violation details"
+                },
+                date: {
+                    bsonType: "date",
+                    description: "Date of violation"
+                }
+            }
+        }
+    }
+});
