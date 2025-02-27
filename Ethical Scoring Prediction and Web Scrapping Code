@@ -1,0 +1,67 @@
+# GEST - Ethical Scoring Prediction & Web Scraping
+
+import pandas as pd
+import numpy as np
+import requests
+from bs4 import BeautifulSoup
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import joblib
+
+# Load Dataset
+np.random.seed(42)
+data = pd.DataFrame({
+    'labor_score': np.random.randint(40, 100, 100),
+    'environmental_score': np.random.randint(30, 100, 100),
+    'governance_score': np.random.randint(50, 100, 100),
+    'violations': np.random.randint(0, 5, 100)
+})
+
+# Compute Ethical Score (Weighted Average)
+data['ethical_score'] = (data['labor_score'] * 0.4 + 
+                         data['environmental_score'] * 0.3 + 
+                         data['governance_score'] * 0.3)
+
+# Labeling Ethical vs. Unethical (Threshold = 70)
+data['ethical_label'] = (data['ethical_score'] > 70).astype(int)
+
+# Splitting Data
+X = data[['labor_score', 'environmental_score', 'governance_score', 'violations']]
+y = data['ethical_label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Evaluate Model
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Model Accuracy: {accuracy * 100:.2f}%')
+
+# Save Model
+joblib.dump(model, "ethical_model.pkl")
+
+# --- Web Scraping for Ethical Data ---
+
+def scrape_ethics_data(url):
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        articles = soup.find_all('div', class_='news-article')  # Adjust selector based on site structure
+        scraped_data = []
+        for article in articles:
+            title = article.find('h2').text.strip()
+            link = article.find('a')['href']
+            summary = article.find('p').text.strip()
+            scraped_data.append({"title": title, "link": link, "summary": summary})
+        return scraped_data
+    else:
+        return []
+
+# Example Usage
+news_data = scrape_ethics_data("https://example.com/ethical-news")
+for item in news_data:
+    print(f"Title: {item['title']}, Link: {item['link']}")
