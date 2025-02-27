@@ -1,0 +1,62 @@
+// GEST - Frontend Authentication (React.js)
+
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const Login = ({ setToken }) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/token', {
+                username,
+                password
+            });
+            setToken(response.data.access_token);
+        } catch (err) {
+            setError('Invalid credentials');
+        }
+    };
+
+    return (
+        <div>
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <input 
+                    type="text" 
+                    placeholder="Username" 
+                    value={username} 
+                    onChange={(e) => setUsername(e.target.value)} 
+                    required 
+                />
+                <input 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    required 
+                />
+                <button type="submit">Login</button>
+            </form>
+            {error && <p>{error}</p>}
+        </div>
+    );
+};
+
+export default Login;
+
+// Secure API Request with Token
+export const fetchUserData = async (token) => {
+    try {
+        const response = await axios.get('http://localhost:8000/users/me', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user data', error);
+        return null;
+    }
+};
