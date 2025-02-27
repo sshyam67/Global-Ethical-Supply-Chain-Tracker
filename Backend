@@ -1,0 +1,45 @@
+# GEST - Global Ethical Supply Chain Tracker
+# Full Backend Code (FastAPI)
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import pandas as pd
+import joblib
+from typing import List
+
+app = FastAPI()
+
+# Load Pre-trained ML Model
+model = joblib.load("ethical_model.pkl")
+
+data = pd.read_csv("supply_chain_data.csv")
+
+class Company(BaseModel):
+    name: str
+    labor_score: int
+    environmental_score: int
+    governance_score: int
+    violations: int
+
+@app.get("/companies")
+def get_companies():
+    return data.to_dict(orient="records")
+
+@app.post("/predict")
+def predict(company: Company):
+    features = [[
+        company.labor_score,
+        company.environmental_score,
+        company.governance_score,
+        company.violations
+    ]]
+    prediction = model.predict(features)
+    return {"ethical_status": "Ethical" if prediction[0] == 1 else "Unethical"}
+
+@app.get("/alerts")
+def get_alerts():
+    return {"message": "Real-time alerts not implemented yet"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
