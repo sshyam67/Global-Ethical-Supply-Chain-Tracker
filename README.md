@@ -1,150 +1,127 @@
-GEST - Global Ethical Supply Chain Tracker
+# 🌐 GEST – Global Ethical Supply Chain Tracker
 
-📌 Project Overview
+![License](https://img.shields.io/badge/license-MIT-green)
+![Build](https://img.shields.io/github/workflow/status/sshyam67/gest/CI)
 
-GEST (Global Ethical Supply Chain Tracker) is an AI-powered platform that provides real-time monitoring, scoring, and predictive analysis of ethical practices in supply chains. It tracks corporate compliance with labor, environmental, and governance standards by aggregating data from multiple sources.
+> AI-powered platform to monitor ethical practices in global supply chains, providing **real-time insights, risk scoring, and predictive analytics**.
 
-🚀 Features
+---
 
-Real-time data collection from regulatory reports, company disclosures, and web scraping.
+## 📌 Table of Contents
 
-Ethical Score Calculation based on labor, environmental, and governance factors.
+- [Overview](#project-overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [API Endpoints](#api-endpoints)
+- [Machine Learning Model](#machine-learning-model)
+- [Deployment](#deployment)
+- [License](#license)
+- [Contributors](#contributors)
+- [Contact](#contact)
 
-AI-based risk prediction using machine learning.
+---
 
-Interactive dashboards for companies and regulators.
+## 📍 Project Overview
 
-Real-time alerts for supply chain violations.
+**GEST** is an AI-based compliance tracker that monitors **labor, environmental, and governance** violations across supply chains using real-time data and ML scoring.
 
-Secure authentication & authorization using JWT.
+It empowers:
+- 📈 **Companies** to monitor supply partners
+- 🧑‍⚖️ **Regulators** to flag violations
+- 📊 **Analysts** to predict ESG risks
 
-🏗️ Tech Stack
+---
 
-Component
+## 🚀 Features
 
-Technology Used
+- ⚡ Real-time web scraping + regulatory data collection  
+- 📊 Ethical scoring system across L/E/G parameters  
+- 🔮 Predictive ML-based risk scoring  
+- 📉 Interactive dashboards for decision-making  
+- 🚨 Real-time violation alerts  
+- 🔐 Secure JWT-based authentication
 
-Frontend
+---
 
-React.js, TailwindCSS
+## 🏗️ Tech Stack
 
-Backend
+| Layer        | Technology                             |
+|--------------|-----------------------------------------|
+| Frontend     | React.js, TailwindCSS                   |
+| Backend      | FastAPI, Python                         |
+| Database     | PostgreSQL, MongoDB                     |
+| Machine Learning | Scikit-learn, TensorFlow            |
+| Web Scraping | BeautifulSoup, Requests                 |
+| Auth         | JWT, OAuth2                             |
+| DevOps       | Docker, GitHub Actions                  |
 
-FastAPI, Python
+---
 
-Database
+## 🛠️ Setup Instructions
 
-PostgreSQL, MongoDB
+```bash
+# 1. Clone Repo
+git clone https://github.com/sshyam67/Global-Ethical-Supply-Chain-Tracker
+cd gest
 
-Machine Learning
+# 2. Backend Setup
+cd backend
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
 
-Scikit-learn, TensorFlow
+# 3. Frontend Setup
+cd frontend
+npm install
+npm start
 
-Web Scraping
+# 4. PostgreSQL Setup
+docker-compose up -d db
 
-BeautifulSoup, Requests
-
-Authentication
-
-JWT, OAuth2
-
-Deployment
-
-Docker, GitHub Actions
-
-🛠️ Setup Instructions
-
-1️⃣ Clone the Repository
-
- git clone https://github.com/sshyam67/Global-Ethical-Supply-Chain-Tracker
- cd gest
-
-2️⃣ Backend Setup (FastAPI)
-
- cd backend
- python -m venv venv
- source venv/bin/activate  # (Windows: venv\Scripts\activate)
- pip install -r requirements.txt
- uvicorn main:app --reload
-
-3️⃣ Frontend Setup (React.js)
-
- cd frontend
- npm install
- npm start
-
-4️⃣ Database Setup (PostgreSQL)
-
- docker-compose up -d db
-
-5️⃣ Running the Full Application
-
- docker-compose up --build
-
+# 5. Full App Deployment
+docker-compose up --build
 🔍 API Endpoints
 
-Endpoint
-
-Method
-
-Description
-
-/companies
-
-GET
-
-Fetch all company ethical scores
-
-/predict
-
-POST
-
-Predict ethical risk of a company
-
-/alerts
-
-GET
-
-Fetch real-time alerts
-
-/token
-
-POST
-
-User authentication
-
+Endpoint	Method	Description
+/companies	GET	Fetch all company ethical scores
+/predict	POST	Predict risk based on ESG input
+/alerts	GET	Retrieve violation alerts
+/token	POST	Auth with JWT
 📊 Machine Learning Model
+Model: Random Forest Classifier
 
-Algorithm Used: Random Forest Classifier
-
-Training Data: Labor, environmental, governance scores with violation records.
+Data: ESG + Violation Records
 
 Accuracy: ~85%
 
+Use Case: Predict risk score for companies in supply chain
+
 📡 Deployment
+⚙️ Docker used for containerization
 
-This project uses Docker & GitHub Actions for continuous integration and deployment.
+🚀 GitHub Actions used for CI/CD
 
-Build & Push Docker Images:
+bash
+Copy
+Edit
+docker build -t yourdockerhub/gest-backend:latest ./backend
+docker build -t yourdockerhub/gest-frontend:latest ./frontend
 
- docker build -t yourdockerhub/gest-backend:latest ./backend
- docker build -t yourdockerhub/gest-frontend:latest ./frontend
- docker push yourdockerhub/gest-backend:latest
- docker push yourdockerhub/gest-frontend:latest
-
-Deploy via SSH (GitHub Actions)
-
-GitHub Actions workflow automates building, pushing, and deploying to a cloud server.
+docker push yourdockerhub/gest-backend:latest
+docker push yourdockerhub/gest-frontend:latest
+➡️ Deployed via GitHub Actions with cloud-hosted service & secure SSH.
 
 📜 License
-
-This project is open-source under the MIT License.
+MIT License. Use freely, contribute openly.
 
 🤝 Contributors
-
-Shyamkrishna - Project Lead
-
+👤 Shyamkrishna – Project Lead, Full Stack Developer & Data Analyst
 
 📞 Contact
+Have questions or want to collaborate?
+📧 Email: shyamkrishna9848@gmail.com
+🔗 LinkedIn
 
-For inquiries, reach out at: shyamkrishna9848@gmail.com
+⭐ If you like this project, star it & follow @sshyam67
