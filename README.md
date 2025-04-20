@@ -147,4 +147,4 @@ Shyamkrishna - Project Lead
 
 📞 Contact
 
-For inquiries, reach out at: sshyamkrishna67@gmail.com
+For inquiries, reach out at: shyamkrishna9848@gmail.com
